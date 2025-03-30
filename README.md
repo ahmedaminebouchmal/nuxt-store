@@ -98,10 +98,9 @@ The project uses MariaDB running in Docker with the following features:
 - UTF8MB4 character encoding for full Unicode support
 - InnoDB as default storage engine
 - Custom configuration for optimal performance
-- Persistent data storage using Docker volumes
 - Health checks for container monitoring
 
-To run the database:
+#### Local Development
 ```bash
 # Build the Docker image
 docker build -t heizung-db .
@@ -109,6 +108,19 @@ docker build -t heizung-db .
 # Run the container
 docker run -d --env-file .env -p 3307:3306 -v mysql_data:/var/lib/mysql --name heizung-mariadb heizung-db
 ```
+
+#### Railway Deployment
+When deploying to Railway:
+1. Create a new service using this repository
+2. Add a volume in Railway dashboard for data persistence
+3. Set the following environment variables in Railway:
+   - `MYSQL_ROOT_PASSWORD`
+   - `MYSQL_DATABASE`
+   - `MYSQL_USER`
+   - `MYSQL_PASSWORD`
+   - `DATABASE_URL`
+
+Note: Railway manages volumes differently from Docker. The volume configuration should be done through the Railway dashboard instead of the Dockerfile.
 
 ### Prisma ORM
 The project uses Prisma as the ORM with the following models:

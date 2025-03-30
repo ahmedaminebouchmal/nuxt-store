@@ -28,11 +28,11 @@ EOT
 # Create directory for initialization scripts
 RUN mkdir -p /docker-entrypoint-initdb.d
 
-# Expose MariaDB port (3307 for external, 3306 internal)
+# Expose MariaDB port
 EXPOSE 3306
 
-# Add volume for persistent data
-VOLUME /var/lib/mysql
+# Note: Data persistence is handled by Railway volumes
+# Configure your volume in Railway dashboard
 
 # Add healthcheck
 HEALTHCHECK --interval=30s --timeout=3s \
