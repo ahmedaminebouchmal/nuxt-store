@@ -22,3 +22,14 @@ logs
 .env
 .env.*
 !.env.example
+
+# Database
+*.sql
+*.sqlite
+*.sqlite3
+mysql_data/
+
+# Prisma
+.prisma/
+*.db
+*.db-journal
