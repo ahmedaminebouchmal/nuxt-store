@@ -1,16 +1,16 @@
-# 🔥 Heizungssysteme Online-Shop
+# 🌟 Raleo Digital GmbH - Online-Shop
 
 <div align="center">
 
-![Heizungssysteme](public/img/header-1.webp)
+![Raleo Digital](public/img/header-1.webp)
 
-Ein moderner E-Commerce-Shop für Heizungssysteme und Zubehör, entwickelt mit modernsten Technologien für optimale Leistung und Skalierbarkeit.
+Der offizielle Online-Shop der Raleo Digital GmbH - Ihr vertrauenswürdiger Partner für hochwertige Heizungssysteme, Klimaanlagen und Photovoltaikanlagen.
 
 [![Nuxt][Nuxt.js]][Nuxt-url] [![Vue][Vue.js]][Vue-url] [![TailwindCSS][TailwindCSS]][Tailwind-url] [![Docker][Docker]][Docker-url] [![Prisma][Prisma]][Prisma-url] [![MariaDB][MariaDB]][MariaDB-url] [![MySQL][MySQL]][MySQL-url]
 
 </div>
 
-## 💫 Entwickelt von
+## 💫 Entwickelt für Raleo Digital GmbH
 
 <div align="center">
   <a href="mailto:bouchmalaabesp@gmail.com">
