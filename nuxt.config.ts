@@ -26,9 +26,7 @@ export default defineNuxtConfig({
       lg: 1024,
       xl: 1280,
       xxl: 1536
-    },
-    format: ['webp', 'png', 'jpg'],
-    provider: 'ipx'
+    }
   },
 
   runtimeConfig: {
