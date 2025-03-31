@@ -1,6 +1,18 @@
+// Elasticsearch test endpoint temporarily disabled
 // @ts-ignore
 import { Client } from '@elastic/elasticsearch'
 
+// Temporary endpoint that won't crash in production
+export default defineEventHandler(async () => {
+  return {
+    status: 'maintenance',
+    message: 'Search service is temporarily disabled for maintenance',
+    maintenance: true
+  }
+})
+
+/*
+Original implementation:
 export default defineEventHandler(async (event) => {
   try {
     const config = useRuntimeConfig()
@@ -36,4 +48,4 @@ export default defineEventHandler(async (event) => {
       code: error?.name || 'UNKNOWN_ERROR'
     }
   }
-})
+}*/ // Added closing comment

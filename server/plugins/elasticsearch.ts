@@ -1,6 +1,14 @@
+// Elasticsearch integration temporarily disabled
 // @ts-ignore
 import { Client } from '@elastic/elasticsearch'
 
+// Empty plugin to prevent build errors
+export default defineNitroPlugin(() => {
+  // Elasticsearch integration will be implemented here
+})
+
+/*
+Original implementation:
 export default defineNitroPlugin((nitroApp) => {
   const config = useRuntimeConfig()
   
@@ -21,3 +29,4 @@ export default defineNitroPlugin((nitroApp) => {
     event.context.elasticsearch = client
   })
 })
+*/

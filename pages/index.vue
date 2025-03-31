@@ -1,9 +1,9 @@
 <template>
   <div class="bg-[#1A0033] min-h-screen">
     <!-- Hero Section -->
-    <div class="mt-[104px] lg:mt-[152px]">
+    <div>
       <!-- Brand Showcase Section -->
-      <div class="w-full bg-[#0D001A] mb-8 py-12">
+      <div class="w-full bg-[#0D001A] py-12">
         <div class="container mx-auto px-4">
           <h2 class="text-2xl font-semibold text-white text-center mb-8">Unsere Top-Marken</h2>
           <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 items-center justify-items-center">

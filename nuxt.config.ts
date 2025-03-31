@@ -19,7 +19,6 @@ export default defineNuxtConfig({
   modules: ["@nuxt/image"],
 
   image: {
-    dir: 'public/img',
     screens: {
       xs: 320,
       sm: 640,
@@ -28,7 +27,8 @@ export default defineNuxtConfig({
       xl: 1280,
       xxl: 1536
     },
-    format: ['webp'],
+    format: ['webp', 'png', 'jpg'],
+    provider: 'ipx'
   },
 
   runtimeConfig: {
