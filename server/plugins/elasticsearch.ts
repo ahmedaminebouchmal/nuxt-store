@@ -4,11 +4,16 @@ import { Client } from '@elastic/elasticsearch'
 export default defineNitroPlugin((nitroApp) => {
   const config = useRuntimeConfig()
   
-  const client: Client = new Client({
+  // Create client with connection timeout
+  const client = new Client({
     node: config.elasticsearchUrl,
     ssl: {
       rejectUnauthorized: false
-    }
+    },
+    maxRetries: 3,
+    requestTimeout: 10000,
+    sniffOnStart: false,
+    sniffInterval: false
   })
 
   // Add the client to the event context
