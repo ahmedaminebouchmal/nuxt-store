@@ -91,6 +91,31 @@ Der offizielle Online-Shop der Raleo Digital GmbH - Ihr vertrauenswürdiger Part
 
 MIT-Lizenz 2025 Ahmed Amine Bouchmal
 
+## 🔍 Elasticsearch Konfiguration
+
+1. **Installation:**
+   ```bash
+   npm install @elastic/elasticsearch@7.13.0
+   ```
+
+2. **Umgebungsvariablen:**
+   Erstellen Sie eine `.env`-Datei mit:
+   ```env
+   ELASTICSEARCH_URL=https://username:password@your-cluster-url:443
+   ```
+
+3. **Nuxt Konfiguration:**
+   In `nuxt.config.ts`:
+   ```typescript
+   runtimeConfig: {
+     elasticsearchUrl: process.env.ELASTICSEARCH_URL
+   }
+   ```
+
+4. **Verbindungstest:**
+   - Endpoint: `/api/elasticsearch/test`
+   - Erfolgreiche Verbindung zeigt Cluster-Status
+
 ## Database Setup
 
 ### Docker MariaDB

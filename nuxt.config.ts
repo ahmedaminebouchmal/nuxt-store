@@ -19,6 +19,7 @@ export default defineNuxtConfig({
   modules: ["@nuxt/image"],
 
   image: {
+    dir: 'public/img',
     screens: {
       xs: 320,
       sm: 640,
@@ -28,5 +29,12 @@ export default defineNuxtConfig({
       xxl: 1536
     },
     format: ['webp'],
+  },
+
+  runtimeConfig: {
+    elasticsearchUrl: process.env.ELASTICSEARCH_URL,
+    public: {
+      // Public runtime config
+    }
   }
 })
