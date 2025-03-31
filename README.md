@@ -6,7 +6,7 @@
 
 Der offizielle Online-Shop der Raleo Digital GmbH - Ihr vertrauenswürdiger Partner für hochwertige Heizungssysteme, Klimaanlagen und Photovoltaikanlagen.
 
-[![Nuxt][Nuxt.js]][Nuxt-url] [![Vue][Vue.js]][Vue-url] [![TailwindCSS][TailwindCSS]][Tailwind-url] [![Docker][Docker]][Docker-url] [![Prisma][Prisma]][Prisma-url] [![MariaDB][MariaDB]][MariaDB-url] [![MySQL][MySQL]][MySQL-url]
+[![Nuxt][Nuxt.js]][Nuxt-url] [![Vue][Vue.js]][Vue-url] [![TailwindCSS][TailwindCSS]][Tailwind-url] [![Elasticsearch][Elasticsearch]][Elasticsearch-url] [![Docker][Docker]][Docker-url] [![Prisma][Prisma]][Prisma-url] [![MariaDB][MariaDB]][MariaDB-url] [![MySQL][MySQL]][MySQL-url]
 
 </div>
 
@@ -174,6 +174,8 @@ npx prisma generate
 [Vue-url]: https://vuejs.org/
 [TailwindCSS]: https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white
 [Tailwind-url]: https://tailwindcss.com/
+[Elasticsearch]: https://img.shields.io/badge/Elasticsearch-005571?style=for-the-badge&logo=elasticsearch&logoColor=white
+[Elasticsearch-url]: https://www.elastic.co/
 [Docker]: https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white
 [Docker-url]: https://www.docker.com/
 [Prisma]: https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white
