@@ -16,7 +16,23 @@ export default defineNuxtConfig({
     ],
   },
 
-  modules: ["@nuxt/image"],
+  modules: [
+    "@nuxt/image",
+    "@sidebase/nuxt-auth"
+  ],
+
+  auth: {
+    globalAppMiddleware: false,
+    provider: {
+      type: 'local',
+      endpoints: {
+        signIn: { path: '/api/auth/login', method: 'post' },
+        signOut: { path: '/api/auth/logout', method: 'post' },
+        signUp: { path: '/api/auth/register', method: 'post' },
+        getSession: { path: '/api/auth/session', method: 'get' }
+      }
+    }
+  },
 
   image: {
     screens: {
@@ -30,9 +46,13 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    elasticsearchUrl: process.env.ELASTICSEARCH_URL,
+    jwtSecret: process.env.JWT_SECRET,
+    jwtAdminSecret: process.env.JWT_ADMIN_SECRET,
+    adminEmail: process.env.ADMIN_EMAIL,
+    adminPassword: process.env.ADMIN_PASSWORD,
+    authSecret: process.env.AUTH_SECRET,
     public: {
-      // Public runtime config
+      authOrigin: process.env.AUTH_ORIGIN
     }
   }
 })

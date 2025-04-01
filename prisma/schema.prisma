@@ -10,6 +10,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Admin {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String
+  name          String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  lastLoginAt   DateTime?
+}
+
 model User {
   id            String    @id @default(uuid())
   email         String    @unique
@@ -21,6 +31,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   wishlist      Product[] @relation("UserWishlist")
   cart          Cart?
+  googleId      String?   @unique  // For Google OAuth
 }
 
 model Product {
