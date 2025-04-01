@@ -116,6 +116,50 @@ MIT-Lizenz 2025 Ahmed Amine Bouchmal
    - Endpoint: `/api/elasticsearch/test`
    - Erfolgreiche Verbindung zeigt Cluster-Status
 
+# Admin-Dashboard Dokumentation
+
+## **Admin-Routen**  
+
+- `/admin/login` - Admin-Authentifizierungsseite  
+- `/admin/dashboard` - Haupt-Dashboard mit Statistiken  
+- `/admin/products` - Produktverwaltung  
+- `/admin/orders` - Bestellverwaltung  
+- `/admin/customers` - Kundenverwaltung  
+
+---
+
+## **Authentifizierungssystem**  
+
+Das Admin-Interface nutzt ein sicheres **JWT-basiertes Authentifizierungssystem**:  
+
+### **Login-Prozess**  
+- Zugangsdaten werden mit den Umgebungsvariablen abgeglichen  
+- JWT-Token wird mit einer **4-stündigen Gültigkeit** generiert  
+- Token wird aus Sicherheitsgründen als **HTTP-only Cookie** gespeichert  
+
+### **Routenschutz**  
+- Alle `/admin/*`-Routen sind durch Middleware geschützt  
+- Middleware prüft die **Gültigkeit des Admin-Tokens**  
+- Nicht authentifizierte Benutzer werden zur **Login-Seite umgeleitet**  
+
+### **Sicherheitsfunktionen**  
+- JWT-Token mit separatem Admin-Secret  
+- **HTTP-only Cookies** (konfigurierbar)  
+- Sichere Cookie-Einstellungen in der Produktion  
+- Verwaltung der **Token-Ablaufzeiten**  
+- **Automatische Weiterleitung** bei Änderung des Authentifizierungsstatus  
+
+---
+
+## **Standard-Admin-Zugangsdaten**  
+
+```txt
+E-Mail: admin@nuxtstore.com  
+Passwort: NuxtAdmin2025  
+
+
+
+
 ## Database Setup
 
 ### Docker MariaDB
