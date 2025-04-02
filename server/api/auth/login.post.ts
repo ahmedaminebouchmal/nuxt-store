@@ -2,14 +2,22 @@ import { H3Event, H3Error } from 'h3'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { PrismaClient } from '@prisma/client'
+import { z } from 'zod'
 
 const prisma = new PrismaClient()
-const runtimeConfig = useRuntimeConfig()
+
+// Validation schema
+const loginSchema = z.object({
+  email: z.string().email('Ungültige E-Mail-Adresse'),
+  password: z.string().min(1, 'Passwort ist erforderlich'),
+  googleToken: z.string().optional()
+})
 
 export default defineEventHandler(async (event: H3Event) => {
   try {
     const body = await readBody(event)
-    const { email, password } = body
+    const validatedData = loginSchema.parse(body)
+    const { email, password, googleToken } = validatedData
 
     // Find user
     const user = await prisma.user.findUnique({
@@ -19,7 +27,7 @@ export default defineEventHandler(async (event: H3Event) => {
     if (!user) {
       throw createError({
         statusCode: 401,
-        message: 'Invalid credentials'
+        message: 'Ungültige Anmeldedaten'
       })
     }
 
@@ -28,51 +36,48 @@ export default defineEventHandler(async (event: H3Event) => {
     if (!isValid) {
       throw createError({
         statusCode: 401,
-        message: 'Invalid credentials'
+        message: 'Ungültige Anmeldedaten'
       })
     }
 
-    // Generate tokens
-    const accessToken = jwt.sign(
+    // Generate token
+    const token = jwt.sign(
       { userId: user.id, role: user.role },
-      runtimeConfig.jwtSecret,
-      { expiresIn: '15m' }
-    )
-
-    const refreshToken = jwt.sign(
-      { userId: user.id },
-      runtimeConfig.jwtSecret,
+      useRuntimeConfig().jwtSecret,
       { expiresIn: '7d' }
     )
 
-    // Set refresh token in HTTP-only cookie
-    setCookie(event, 'refresh_token', refreshToken, {
+    // Set token in HTTP-only cookie
+    setCookie(event, 'user_token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7 // 7 days
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      path: '/'
     })
 
-    // Return access token and user info
     return {
-      accessToken,
+      success: true,
       user: {
         id: user.id,
         email: user.email,
-        role: user.role,
-        name: user.name
+        name: user.name,
+        role: user.role
       }
     }
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Login error:', error)
     
-    if (error instanceof H3Error) {
-      throw error
+    // Handle Zod validation errors
+    if (error instanceof z.ZodError) {
+      throw createError({
+        statusCode: 400,
+        message: error.errors[0].message
+      })
     }
-    
+
     throw createError({
-      statusCode: 500,
-      message: 'Internal server error'
+      statusCode: error instanceof H3Error ? error.statusCode : 500,
+      message: error instanceof Error ? error.message : 'Ein Fehler ist aufgetreten'
     })
   }
 })

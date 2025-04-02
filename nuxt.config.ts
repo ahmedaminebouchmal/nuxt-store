@@ -17,22 +17,8 @@ export default defineNuxtConfig({
   },
 
   modules: [
-    "@nuxt/image",
-    "@sidebase/nuxt-auth"
+    "@nuxt/image"
   ],
-
-  auth: {
-    globalAppMiddleware: false,
-    provider: {
-      type: 'local',
-      endpoints: {
-        signIn: { path: '/api/auth/login', method: 'post' },
-        signOut: { path: '/api/auth/logout', method: 'post' },
-        signUp: { path: '/api/auth/register', method: 'post' },
-        getSession: { path: '/api/auth/session', method: 'get' }
-      }
-    }
-  },
 
   image: {
     screens: {
@@ -50,9 +36,21 @@ export default defineNuxtConfig({
     jwtAdminSecret: process.env.JWT_ADMIN_SECRET,
     adminEmail: process.env.ADMIN_EMAIL,
     adminPassword: process.env.ADMIN_PASSWORD,
-    authSecret: process.env.AUTH_SECRET,
+    googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
     public: {
-      authOrigin: process.env.AUTH_ORIGIN
+      googleClientId: process.env.GOOGLE_CLIENT_ID
+    }
+  },
+
+  app: {
+    head: {
+      script: [
+        {
+          src: 'https://accounts.google.com/gsi/client',
+          async: true,
+          defer: true
+        }
+      ]
     }
   }
 })
