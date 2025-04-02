@@ -28,7 +28,7 @@ interface RegisterResult {
 interface GoogleUser {
   email: string
   name: string
-  sub: string
+  sub: string // This is the Google user ID
 }
 
 export interface UseCustomAuthReturn {
@@ -83,9 +83,11 @@ export const useCustomAuth = (): UseCustomAuthReturn => {
         const popup = window.open(
           `https://accounts.google.com/o/oauth2/v2/auth?` +
           `client_id=${config.public.googleClientId}&` +
-          `redirect_uri=${window.location.origin}/api/auth/google/callback&` +
-          `response_type=token&` +
-          `scope=email profile`,
+          `redirect_uri=http://localhost:3000/api/auth/google/callback&` +
+          `response_type=code&` +
+          `scope=email profile&` +
+          `access_type=offline&` +
+          `prompt=consent`,
           'Google Login',
           `width=${width},height=${height},left=${left},top=${top}`
         )
@@ -93,10 +95,18 @@ export const useCustomAuth = (): UseCustomAuthReturn => {
         // Listen for the token from the popup
         const messageHandler = async (event: MessageEvent) => {
           if (event.origin !== window.location.origin) return
-          if (!event.data.token) return
-
+          if (event.data.type !== 'google-oauth') return
+          
           window.removeEventListener('message', messageHandler)
           if (popup) popup.close()
+
+          if (event.data.error) {
+            resolve({
+              success: false,
+              error: event.data.error
+            })
+            return
+          }
 
           try {
             // Get user info from Google
@@ -116,7 +126,8 @@ export const useCustomAuth = (): UseCustomAuthReturn => {
               body: {
                 email: googleUser.email,
                 name: googleUser.name,
-                googleToken: event.data.token
+                googleToken: event.data.token,
+                googleId: googleUser.sub // Add the Google user ID
               }
             })
 

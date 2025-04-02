@@ -17,7 +17,8 @@ const regularRegisterSchema = z.object({
 const googleRegisterSchema = z.object({
   email: z.string().email('Ungültige E-Mail-Adresse'),
   name: z.string().min(1, 'Name ist erforderlich'),
-  googleToken: z.string().min(1, 'Google Token ist erforderlich')
+  googleToken: z.string().min(1, 'Google Token ist erforderlich'),
+  googleId: z.string().min(1, 'Google ID ist erforderlich')
 })
 
 type RegularRegistration = z.infer<typeof regularRegisterSchema>
@@ -37,16 +38,29 @@ export default defineEventHandler(async (event: H3Event) => {
 
     const { email, name } = validatedData
 
-    // Check if user exists
-    const existingUser = await prisma.user.findUnique({
-      where: { email }
-    })
+    // For Google registration, first try to find user by googleId
+    if (isGoogleRegistration) {
+      const { googleId } = validatedData as GoogleRegistration
+      const existingGoogleUser = await prisma.user.findFirst({
+        where: { 
+          OR: [
+            { googleId },
+            { email }
+          ]
+        }
+      })
 
-    // For Google registration, if user exists, just log them in
-    if (existingUser) {
-      if (isGoogleRegistration) {
+      if (existingGoogleUser) {
+        // Update googleId if user exists with same email but no googleId
+        if (!existingGoogleUser.googleId) {
+          await prisma.user.update({
+            where: { id: existingGoogleUser.id },
+            data: { googleId }
+          })
+        }
+
         const token = jwt.sign(
-          { userId: existingUser.id, role: existingUser.role },
+          { userId: existingGoogleUser.id, role: existingGoogleUser.role },
           useRuntimeConfig().jwtSecret,
           { expiresIn: '7d' }
         )
@@ -61,18 +75,25 @@ export default defineEventHandler(async (event: H3Event) => {
         return {
           success: true,
           user: {
-            id: existingUser.id,
-            email: existingUser.email,
-            name: existingUser.name,
-            role: existingUser.role
+            id: existingGoogleUser.id,
+            email: existingGoogleUser.email,
+            name: existingGoogleUser.name,
+            role: existingGoogleUser.role
           }
         }
       }
-
-      throw createError({
-        statusCode: 400,
-        message: 'Diese E-Mail-Adresse ist bereits registriert'
+    } else {
+      // For regular registration, check if email exists
+      const existingUser = await prisma.user.findUnique({
+        where: { email }
       })
+
+      if (existingUser) {
+        throw createError({
+          statusCode: 400,
+          message: 'Diese E-Mail-Adresse ist bereits registriert'
+        })
+      }
     }
 
     // Create user
@@ -81,6 +102,7 @@ export default defineEventHandler(async (event: H3Event) => {
       name,
       role: 'USER' as const,
       password: isGoogleRegistration ? '' : await bcrypt.hash((validatedData as RegularRegistration).password, 10),
+      googleId: isGoogleRegistration ? (validatedData as GoogleRegistration).googleId : null,
       cart: {
         create: {} // Create an empty cart for the user
       }
